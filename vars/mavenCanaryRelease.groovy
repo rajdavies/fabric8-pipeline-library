@@ -30,6 +30,9 @@ def call(body) {
         }
     }
 
+    //try changeLog
+    changeLog(body);
+
     //try sonarQube
     sonarQubeScanner(body);
 
