@@ -9,8 +9,8 @@ def call(body) {
     def doChangeLog = config.changeLog ?: false
 
     if (doChangeLog) {
-        def changelog = new ChangeLog();
-        def changes = changeLog.getChangeLog(${env.JOB_NAME},pwd())
+        def cl = new ChangeLog();
+        def changes = cl.getChangeLog(env.JOB_NAME,pwd())
 
         echo" CHANGES !!!! = ${changes}"
     }
