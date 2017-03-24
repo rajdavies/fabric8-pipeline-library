@@ -12,9 +12,9 @@ def call(body) {
         def gu = new GitUtils();
         echo "PWD = ${pwd()}"
         def git = pwd() + "/.git"
+        sh "git status"
         def changes = gu.getChangeLog(env.JOB_NAME,git)
-
-        echo" CHANGES !!!! = ${changes}"
+        echo " CHANGES !!!! = ${changes}"
     }
 
 }
