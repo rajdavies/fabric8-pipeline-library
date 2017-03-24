@@ -18,6 +18,9 @@ def call(body) {
     }
 
     sh "git checkout -b ${env.JOB_NAME}-${config.version}"
+    //try changeLog
+    changeLog(body);
+
     sh "mvn org.codehaus.mojo:versions-maven-plugin:2.2:set -U -DnewVersion=${config.version}"
     sh "mvn clean -e -U deploy -Dmaven.test.skip=${skipTests} ${profile}"
 
@@ -29,9 +32,6 @@ def call(body) {
           echo "Unable to run Bayesian analysis: ${err}"
         }
     }
-
-    //try changeLog
-    changeLog(body);
 
     //try sonarQube
     sonarQubeScanner(body);
