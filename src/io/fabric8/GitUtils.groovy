@@ -39,6 +39,7 @@ def getChangeLog(String buildName,String directory){
           "{{/tags}}\n";
 
   GitChangelogApi gitChangelogApi = GitChangelogApi.gitChangelogApiBuilder();
+  echo "Getting changelog from directory ${directory}"
   def changeLog = gitChangelogApi.withFromRepo(directory).withTemplateContent(TEMPLATE).render();
   return changeLog
 }
