@@ -19,6 +19,8 @@ def call(body) {
 
     sh "git checkout -b ${env.JOB_NAME}-${config.version}"
     //try changeLog
+    sh "pwd"
+    sh "ls -l .git"
     changeLog(body);
 
     sh "mvn org.codehaus.mojo:versions-maven-plugin:2.2:set -U -DnewVersion=${config.version}"
