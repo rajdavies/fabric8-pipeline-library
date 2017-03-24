@@ -11,9 +11,9 @@ def call(body) {
     if (doChangeLog) {
         def gu = new GitUtils();
         echo "PWD = ${pwd()}"
-        def git = pwd() + "/.git"
         sh "git status"
-        def changes = gu.getChangeLog(env.JOB_NAME,git)
+        sh "cat .git/HEAD"
+        def changes = gu.getChangeLog(env.JOB_NAME,pwd())
         echo " CHANGES !!!! = ${changes}"
     }
 
