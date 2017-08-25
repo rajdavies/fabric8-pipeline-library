@@ -911,7 +911,6 @@ def getScmPushUrl() {
 def openShiftImageStreamExists(String name){
     if (isOpenShift()) {
         try {
-            def
             def result = sh(returnStdout: true, script: 'oc describe is ${name} --namespace openshift')
             if (result && result.contains(name)){
                 echo "ImageStream  ${name} is already installed globally"
