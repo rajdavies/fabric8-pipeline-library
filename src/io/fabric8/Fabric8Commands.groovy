@@ -842,14 +842,17 @@ def getScmPushUrl() {
 def openShiftImageStreamExists(String name){
     if (isOpenShift()) {
         try {
+            def
             def result = sh(returnStdout: true, script: 'oc describe is ${name} --namespace openshift')
             if (result && result.contains(name)){
+                echo "ImageStream  ${name} is already installed globally"
                 return true;
             }else {
                 //see if its already in our namespace
                 def namespace = kubernetes.getNamespace();
                 result = sh(returnStdout: true, script: 'oc describe is ${name} --namespace ${namespace}')
                 if (result && result.contains(name)){
+                    echo "ImageStream  ${name} is already installed in project ${namespace}"
                     return true;
                 }
             }
@@ -863,11 +866,12 @@ def openShiftImageStreamExists(String name){
 @NonCPS
 def openShiftImageStreamInstall(String name, String location){
     if (openShiftImageStreamExists(name)) {
+        echo "ImageStream ${name} does not exist - installing ..."
         try {
             def result = sh(returnStdout: true, script: 'oc create -f  ${location}')
-            if (result && result.contains(name)){
-                return true;
-            }
+            def namespace = kubernetes.getNamespace();
+            echo "ImageStream ${name} now installed in project ${namespace}"
+            return true;
         }catch (e){
             echo "Warning: ${e} "
         }
