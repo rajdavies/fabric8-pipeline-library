@@ -907,4 +907,41 @@ def getScmPushUrl() {
     return url
 }
 
+@NonCPS
+def openShiftImageStreamExists(String name){
+    if (isOpenShift()) {
+        try {
+            def result = sh(returnStdout: true, script: 'oc describe is ${name} --namespace openshift')
+            if (result && result.contains(name)){
+                return true;
+            }else {
+                //see if its already in our namespace
+                def namespace = kubernetes.getNamespace();
+                result = sh(returnStdout: true, script: 'oc describe is ${name} --namespace ${namespace}')
+                if (result && result.contains(name)){
+                    return true;
+                }
+            }
+        }catch (e){
+            echo "Warning: ${e} "
+        }
+    }
+    return false;
+}
+
+@NonCPS
+def openShiftImageStreamInstall(String name, String location){
+    if (openShiftImageStreamExists(name)) {
+        try {
+            def result = sh(returnStdout: true, script: 'oc create -f  ${location}')
+            if (result && result.contains(name)){
+                return true;
+            }
+        }catch (e){
+            echo "Warning: ${e} "
+        }
+    }
+    return false;
+}
+
 return this
